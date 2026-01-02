@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c:*)",
+      "Bash(python demo.py:*)",
+      "Bash(uv run uvicorn:*)",
+      "Bash(PORT=3002 npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(PORT=3003 npm run dev:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(PORT=3004 npm run dev:*)",
+      "Bash(findstr:*)",
+      "Bash(npm run dev:*)",
+      "Bash(alembic upgrade:*)",
+      "Bash(npm install:*)",
+      "Bash(test:*)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}
