@@ -23,6 +23,16 @@ Evolution of Todo is a progressive task management application that evolves thro
 
 ## 📋 Project Phases
 
+| Phase | Status | Description |
+|-------|--------|-------------|
+| Phase I | ✅ Complete | Console application with in-memory storage |
+| **Phase II** | **✅ Complete** | **Full-stack web app with authentication** |
+| Phase III | 🔄 Planned | AI chatbot with MCP tools |
+| Phase IV | 🔄 Planned | Kubernetes deployment |
+| Phase V | 🔄 Planned | Cloud production with Kafka & Dapr |
+
+---
+
 ### ✅ Phase I: Console Application (COMPLETED)
 
 **Status**: Implemented and tested
@@ -50,18 +60,74 @@ python main.py
 
 ---
 
-### 🔄 Phase II: Full-Stack Web Application (PLANNED)
+### ✅ Phase II: Full-Stack Web Application (IMPLEMENTED)
 
-Transform the console app into a multi-user web application.
+**Status**: Implemented with backend and frontend
+
+Transform the console app into a multi-user web application with RESTful API and responsive UI.
 
 **Features**:
-- User authentication (Better Auth + JWT)
-- RESTful API (FastAPI)
-- Responsive web UI (Next.js 16+)
-- PostgreSQL persistence (Neon)
-- All Phase I features via web interface
+- ✅ User authentication (JWT-based)
+- ✅ RESTful API (FastAPI with async/await)
+- ✅ Responsive web UI (Next.js 16+ App Router)
+- ✅ PostgreSQL persistence with migrations (Alembic)
+- ✅ All Phase I features via web interface
+- ✅ Task priorities, categories, and due dates
 
-**Tech Stack**: Next.js 16+, FastAPI, PostgreSQL (Neon), Better Auth
+**Tech Stack**: Next.js 16+, FastAPI, PostgreSQL, SQLModel, Alembic
+
+📂 **Location**:
+- Backend: `backend/`
+- Frontend: `frontend/`
+📖 **Specification**: [Phase II Spec](SPECIFICATION.md#phase-ii-full-stack-web-application-specification)
+
+**Quick Start**:
+
+Backend:
+```bash
+cd backend
+# Set up environment variables (copy .env.example to .env)
+uv sync
+uv run alembic upgrade head
+uv run uvicorn src.main:app --reload
+```
+
+Frontend:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+**API Documentation**:
+- API runs on `http://localhost:8000`
+- Interactive API docs: `http://localhost:8000/docs`
+- OpenAPI schema: `http://localhost:8000/openapi.json`
+
+**Database Migrations**:
+```bash
+# Create a new migration after model changes
+uv run alembic revision --autogenerate -m "description"
+
+# Apply migrations
+uv run alembic upgrade head
+
+# Rollback last migration
+uv run alembic downgrade -1
+```
+
+**Key Features**:
+- **Authentication**: JWT-based auth with secure password hashing
+- **Task Management**: Full CRUD operations with user isolation
+- **Data Persistence**: PostgreSQL with automatic timestamps
+- **API Standards**: RESTful endpoints with proper HTTP status codes
+- **Error Handling**: Standardized error responses
+- **Type Safety**: Full TypeScript on frontend, Python type hints on backend
+
+**Database Schema**:
+- `users` table: User accounts with email and hashed passwords
+- `tasks` table: Tasks with title, description, completion status, priority, category, and due dates
+- Automatic migrations via Alembic
 
 ---
 
@@ -175,25 +241,80 @@ hackathon-2-TODO-App/
 
 ### Prerequisites
 
-- **Python 3.13+** (required for Phase I)
-- **UV** (Python package manager)
+**Phase I (Console App)**:
+- Python 3.13+
+- No additional dependencies
+
+**Phase II (Web Application)**:
+- **Python 3.13+** with **UV** package manager
+- **Node.js 20+** and **npm**
+- **PostgreSQL database** (Neon, local, or any PostgreSQL provider)
 - **Git** (version control)
 
 ### Installation
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/hackathon-2-TODO-App.git
-   cd hackathon-2-TODO-App
-   ```
+#### Phase I: Console Application
 
-2. **Run Phase I Console App**:
-   ```bash
-   cd todo-app/src/phase-1
-   python main.py
-   ```
+```bash
+cd todo-app/src/phase-1
+python main.py
+```
 
-No additional dependencies needed for Phase I!
+#### Phase II: Web Application
+
+**1. Clone the repository**:
+```bash
+git clone https://github.com/yourusername/hackathon-2-TODO-App.git
+cd hackathon-2-TODO-App
+```
+
+**2. Set up Environment Variables**:
+
+Copy the environment template to the root directory:
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and configure the following required variables:
+- `DATABASE_URL`: PostgreSQL connection string
+- `BETTER_AUTH_SECRET`: Secret key for JWT (generate with `openssl rand -hex 32`)
+- `NEXT_PUBLIC_API_URL`: Backend API URL (default: `http://localhost:8000`)
+
+See `.env.example` for all configuration options.
+
+**3. Set up Backend**:
+```bash
+cd backend
+
+# Install dependencies
+uv sync
+
+# Run database migrations
+uv run alembic upgrade head
+
+# Start backend server
+uv run uvicorn src.main:app --reload
+```
+
+Backend will run on `http://localhost:8000`
+
+**4. Set up Frontend** (in a new terminal):
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Frontend will run on `http://localhost:3000`
+
+**5. Access the application**:
+- Open `http://localhost:3000` in your browser
+- Register a new account
+- Start managing your tasks!
 
 ---
 
@@ -202,10 +323,13 @@ No additional dependencies needed for Phase I!
 | Document | Description |
 |----------|-------------|
 | [SPECIFICATION.md](SPECIFICATION.md) | Complete feature specification for all phases |
+| [STATUS.md](STATUS.md) | Project status and progress tracking |
+| [CLARIFICATIONS.md](CLARIFICATIONS.md) | Specification clarifications and decisions |
 | [CONSTITUTION.md](todo-app/.specify/memory/constitution.md) | Project principles and development standards |
-| [CLAUDE.md](todo-app/CLAUDE.md) | Claude Code integration instructions |
-| [Phase I Spec](todo-app/specs/phase-1/spec.md) | Detailed Phase I feature specification |
-| [Phase I README](todo-app/src/phase-1/README.md) | Phase I usage and architecture |
+| [Backend CLAUDE.md](backend/CLAUDE.md) | Backend implementation guidelines |
+| [Frontend CLAUDE.md](frontend/CLAUDE.md) | Frontend implementation guidelines |
+| [Phase I README](todo-app/src/phase-1/README.md) | Phase I console app usage |
+| [.env.example](.env.example) | Environment variables template |
 
 ---
 
@@ -244,6 +368,78 @@ See [CONSTITUTION.md](todo-app/.specify/memory/constitution.md) for complete pri
 
 ---
 
+## 🏛️ Architecture (Phase II)
+
+### Backend Architecture
+
+```
+Backend (FastAPI)
+├── src/main.py           # Application entry point
+├── src/models.py         # SQLModel database models
+├── src/db.py             # Database connection & session management
+├── src/routes/
+│   ├── auth.py          # Authentication endpoints
+│   └── tasks.py         # Task CRUD endpoints
+├── src/middleware/
+│   └── auth.py          # JWT authentication middleware
+└── src/utils/
+    └── auth_utils.py    # Password hashing & verification
+```
+
+**Key Components**:
+- **FastAPI**: Async web framework with automatic OpenAPI documentation
+- **SQLModel**: Type-safe ORM combining SQLAlchemy and Pydantic
+- **Alembic**: Database migration management
+- **JWT**: Stateless authentication with Bearer tokens
+- **Async/Await**: All database operations are asynchronous
+- **User Isolation**: All queries automatically filter by user_id
+
+### Frontend Architecture
+
+```
+Frontend (Next.js 16)
+├── src/app/              # App Router pages
+│   ├── page.tsx         # Home/landing page
+│   ├── login/page.tsx   # Login page
+│   ├── register/page.tsx # Registration page
+│   └── dashboard/page.tsx # Main dashboard
+├── src/components/       # React components
+│   ├── TaskList.tsx
+│   ├── TaskItem.tsx
+│   └── AddTaskForm.tsx
+├── src/lib/
+│   ├── api.ts           # Axios API client
+│   └── auth.ts          # Authentication utilities
+└── src/types/
+    └── task.ts          # TypeScript type definitions
+```
+
+**Key Components**:
+- **Next.js 16 App Router**: File-based routing with server components
+- **TypeScript**: Full type safety across the frontend
+- **Tailwind CSS**: Utility-first styling with responsive design
+- **Axios**: HTTP client with interceptors for authentication
+- **React Server Components**: Performance optimization by default
+- **Client Components**: Interactive elements with 'use client' directive
+
+### API Endpoints
+
+**Authentication**:
+- `POST /api/v1/auth/register` - Create new user account
+- `POST /api/v1/auth/login` - Login and receive JWT token
+
+**Tasks** (all require JWT authentication):
+- `GET /api/v1/{user_id}/tasks` - List all user's tasks
+- `POST /api/v1/{user_id}/tasks` - Create new task
+- `GET /api/v1/{user_id}/tasks/{id}` - Get specific task
+- `PUT /api/v1/{user_id}/tasks/{id}` - Update task
+- `DELETE /api/v1/{user_id}/tasks/{id}` - Delete task
+- `PATCH /api/v1/{user_id}/tasks/{id}/complete` - Toggle completion status
+
+All endpoints return standardized JSON responses with proper HTTP status codes.
+
+---
+
 ## 🧪 Testing
 
 ### Phase I Manual Testing
@@ -265,6 +461,53 @@ Test scenarios:
 - ✅ Validation (empty title, length limits)
 - ✅ Error handling (invalid IDs)
 
+### Phase II Testing
+
+**Backend API Testing**:
+
+Access the interactive API documentation at `http://localhost:8000/docs`
+
+Test the following flows:
+1. **Authentication**:
+   - Register a new user
+   - Login with correct credentials
+   - Login with incorrect credentials (should fail)
+   - Access protected endpoint without token (should fail)
+
+2. **Task CRUD Operations**:
+   - Create task with valid data
+   - Create task with invalid data (should fail validation)
+   - List all tasks for authenticated user
+   - Update existing task
+   - Delete task
+   - Try accessing another user's tasks (should fail)
+
+3. **Database Persistence**:
+   - Create tasks, restart backend, verify tasks persist
+   - Test database migrations: `uv run alembic upgrade head`
+
+**Frontend Testing**:
+
+Manual testing checklist:
+- ✅ User registration with valid email and password
+- ✅ User login and logout
+- ✅ Create new task via web UI
+- ✅ View task list with real-time updates
+- ✅ Edit task inline
+- ✅ Delete task with confirmation
+- ✅ Toggle task completion
+- ✅ Responsive design on mobile (320px+), tablet (768px+), desktop (1024px+)
+- ✅ Form validation with error messages
+- ✅ Loading states during API calls
+- ✅ Error handling with user-friendly messages
+
+**Security Testing**:
+- ✅ JWT token stored securely in localStorage
+- ✅ Protected routes redirect to login
+- ✅ User isolation (can't access other users' tasks)
+- ✅ Password hashing (not stored in plain text)
+- ✅ CORS configured properly
+
 ---
 
 ## 📊 Success Criteria
@@ -278,6 +521,17 @@ Test scenarios:
 - [x] Type hints on all functions
 - [x] No external dependencies
 
+### Phase II Success ✅
+
+- [x] Backend API implemented with FastAPI
+- [x] Frontend UI implemented with Next.js 16+ App Router
+- [x] User authentication with JWT tokens
+- [x] PostgreSQL database with migrations
+- [x] All Phase I features available via web interface
+- [x] Task priorities, categories, and due dates
+- [x] Responsive design for mobile and desktop
+- [x] RESTful API with proper error handling
+
 ### Future Phases
 
 See [SPECIFICATION.md](SPECIFICATION.md#success-metrics) for complete success criteria.
@@ -286,17 +540,22 @@ See [SPECIFICATION.md](SPECIFICATION.md#success-metrics) for complete success cr
 
 ## 🛠️ Technology Stack
 
-### Phase I (Current)
+### Phase I (Console App) ✅
 - **Language**: Python 3.13+
 - **Storage**: In-memory (dictionaries)
 - **Package Manager**: UV
 - **Development**: Claude Code + Spec-Kit Plus
 
-### Future Phases
-- **Frontend**: Next.js 16+ (App Router)
-- **Backend**: FastAPI (async)
-- **Database**: Neon PostgreSQL
-- **Auth**: Better Auth (JWT)
+### Phase II (Web Application) ✅
+- **Frontend**: Next.js 16+ (App Router), TypeScript, Tailwind CSS
+- **Backend**: FastAPI (async/await), Python 3.13+
+- **Database**: PostgreSQL with SQLModel ORM
+- **Migrations**: Alembic
+- **Auth**: JWT-based authentication
+- **API**: RESTful with OpenAPI documentation
+- **Development**: Claude Code + Spec-Driven Development
+
+### Phase III-V (Planned)
 - **AI**: OpenAI Agents SDK, MCP Server
 - **Infrastructure**: Docker, Kubernetes, Helm
 - **Runtime**: Dapr
@@ -330,6 +589,7 @@ For questions or feedback, please open an issue on GitHub.
 
 ---
 
-**Generated by**: Claude Code + Spec-Kit Plus
-**Date**: 2025-12-25
-**Version**: Phase I Complete
+**Generated by**: Claude Code + Spec-Driven Development
+**Last Updated**: 2026-01-02
+**Version**: Phase II Complete
+**Current Status**: Full-stack web application with authentication
